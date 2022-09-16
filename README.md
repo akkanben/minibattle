@@ -12,10 +12,9 @@ Mini Battle simulator is a command line application that simulates battle betwee
 ## Releases
 
 - Version 0.1.0
-  - New creatures have randomly geneated STR, DEX, and MAG in the range of 5-15.
-  - Hit points are calcualted as 2x STR and stamina points are 2x DEX. MAG is currently unused.
+  - New creatures have randomly generated STR, DEX, and MAG in the range of 5-15.
+  - Hit points are calculated as 2x STR and stamina points are 2x DEX. MAG is currently unused.
   - Each round of battle the creatures have a 50/50 chance to be the creature that attacks.
     - An attack costs 10 stamina points and does a flat 5 damage to the opponents hit points.
-    - If a creature can not attack beacuse of too few stamina points then it rests and regains 10 points.
-
+    - If a creature can not attack because of too few stamina points then it rests and regains 10 points.
 
