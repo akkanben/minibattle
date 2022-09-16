@@ -12,10 +12,14 @@ public class CreatureStat {
 
     public void decrease(int amount) {
         current -= amount;
+        if (current < 0)
+            current = 0;
     }
 
     public void increase(int amount) {
         current += amount;
+        if (current > max)
+            current = max;
     }
 
     public int getCurrent() {
