@@ -26,7 +26,12 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'minibattle.App'
+    mainClass = 'minibattle.MiniBattle'
+    applicationName = 'MiniBattle'
+}
+
+run {
+    standardInput = System.in
 }
 
 tasks.named('test') {
