@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Creature {
 
-    private static final int STAT_MIN = 5;
+    private static final int STAT_MIN = 3;
     private static final int STAT_MAX = 15;
     private static final int DEFAULT_STAMINA_RECHARGE = 10;
 
@@ -38,7 +38,6 @@ public class Creature {
         initializeCreatureStats();
     }
 
-
     public String getName() {
         return name;
     }
@@ -50,11 +49,13 @@ public class Creature {
     // returns attack messages
     public String attack(Creature creature) {
         int affinityBonus = (int) (weapon.getAffinityMultiplier() * stats.get(weapon.getAffinity()).getCurrent());
-        int totalAttack = weapon.getDamage() + affinityBonus;
         StringBuilder outputMessage = new StringBuilder();
         int currentSP = stats.get(Stat.SP).getCurrent();
         int maxSP = stats.get(Stat.SP).getMax();
         int staminaCost = weapon.getStaminaCost();
+        int weaponPenalty = maxSP >= staminaCost ? 0 : staminaCost - maxSP;
+        int totalAttack = weapon.getDamage() + affinityBonus - weaponPenalty;
+
         // We can afford the SP to attack
         if (currentSP >= staminaCost) {
             outputMessage.append(name).append(" attacks ").append(creature.getName());
@@ -66,16 +67,16 @@ public class Creature {
         // We're full of stamina, but we can't afford the SP to attack
         } else if (maxSP < staminaCost && currentSP == maxSP) {
             outputMessage.append(name).append(" attacks ").append(creature.getName());
-            outputMessage.append( " at a ").append(maxSP - staminaCost).append(" stamina penalty");
+            outputMessage.append( " at a ").append(-weaponPenalty).append(" stamina penalty");
             outputMessage.append(" with ").append(weapon);
-            outputMessage.append(" for ").append(totalAttack - (staminaCost - maxSP)).append(" damage.\n");
+            outputMessage.append(" for ").append(totalAttack).append(" damage.\n");
             outputMessage.append(name).append(" uses all ").append(maxSP).append(" Stamina Points.\n");
-            creature.getStat(Stat.HP).decrease(totalAttack - (staminaCost - maxSP));
+            creature.getStat(Stat.HP).decrease(totalAttack);
             stats.get(Stat.SP).decrease(weapon.getStaminaCost());
         // We're not at full stamina, and we can't afford the SP to attack, so we recharge
         } else  {
             if (maxSP >= DEFAULT_STAMINA_RECHARGE) {
-                outputMessage.append(name).append(" recovers " + DEFAULT_STAMINA_RECHARGE + " Stamina Points.");
+                outputMessage.append(name).append(" recovers ").append(DEFAULT_STAMINA_RECHARGE).append(" Stamina Points.");
                 stats.get(Stat.SP).increase(DEFAULT_STAMINA_RECHARGE);
             } else {
                 outputMessage.append(name).append(" recovers ").append(maxSP).append(" Stamina Points.");
@@ -104,7 +105,6 @@ public class Creature {
         stats.put(Stat.MAG, new CreatureStat(getRandomStatValue(random)));
         stats.put(Stat.HP, new CreatureStat(stats.get(Stat.STR).getMax() * 2));
         stats.put(Stat.SP, new CreatureStat(stats.get(Stat.DEX).getMax() * 2));
-        stats.put(Stat.SP, new CreatureStat(5));
     }
 
     private int getRandomStatValue(Random random) {
