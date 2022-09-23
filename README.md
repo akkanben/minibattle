@@ -6,7 +6,7 @@ Mini Battle simulator is a command line application that simulates battle betwee
 
 ## Example
 
-![Example simulation](./images/example_01.gif)
+![Example simulation](./images/example_02.gif)
 
 
 ## Releases
