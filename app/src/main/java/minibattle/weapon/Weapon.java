@@ -15,9 +15,35 @@ public class Weapon {
     private static final double PIERCING_DEX_MULTIPLIER = 0.2;
     private static final double MAGICAL_MAG_MULTIPLIER = 0.5;
 
+    private static final int DAGGER_BASE_DAMAGE = 3;
+    private static final int DAGGER_STAMINA_COST = 4;
+
+    private static final int SWORD_BASE_DAMAGE = 4;
+    private static final int SWORD_STAMINA_COST = 7;
+
+    private static final int UNARMED_BASE_DAMAGE = 2;
+    private static final int UNARMED_STAMINA_COST = 6;
+
+    private static final int IMPROVISED_BASE_DAMAGE = 2;
+    private static final int IMPROVISED_STAMINA_COST = 6;
+
+    private static final int CLUB_BASE_DAMAGE = 5;
+    private static final int CLUB_STAMINA_COST = 12;
+
+    private static final int RAPIER_BASE_DAMAGE = 4;
+    private static final int RAPIER_STAMINA_COST = 7;
+
+    private static final int AXE_BASE_DAMAGE = 5;
+    private static final int AXE_STAMINA_COST = 11;
+
+    private static final int SPEAR_BASE_DAMAGE = 4;
+    private static final int SPEAR_STAMINA_COST = 8;
+
+    private static final int WAND_BASE_DAMAGE = 3;
+    private static final int WAND_STAMINA_COST = 2;
+
     private static final Random random = new Random();
     private static final List<WeaponKind> KINDS = List.of(WeaponKind.values());
-
     private final WeaponKind weaponKind;
     private int baseDamage;
     private int staminaCost;
@@ -65,43 +91,48 @@ public class Weapon {
     private void initWeaponBase() {
         switch (weaponKind) {
             case DAGGER -> {
-                baseDamage = 3;
-                staminaCost = 4;
+                baseDamage = DAGGER_BASE_DAMAGE;
+                staminaCost = DAGGER_STAMINA_COST;
                 damageType = DamageType.PIERCING;
             }
             case SWORD -> {
-                baseDamage = 4;
-                staminaCost = 7;
+                baseDamage = SWORD_BASE_DAMAGE;
+                staminaCost = SWORD_STAMINA_COST;
                 damageType = DamageType.SLICING;
             }
-            case UNARMED, IMPROVISED -> {
-                baseDamage = 2;
-                staminaCost = 6;
+            case UNARMED -> {
+                baseDamage = UNARMED_BASE_DAMAGE;
+                staminaCost = UNARMED_STAMINA_COST;
+                damageType = DamageType.BLUNT;
+            }
+            case IMPROVISED -> {
+                baseDamage = IMPROVISED_BASE_DAMAGE;
+                staminaCost = IMPROVISED_STAMINA_COST;
                 damageType = DamageType.BLUNT;
             }
             case CLUB -> {
-                baseDamage = 5;
-                staminaCost = 12;
+                baseDamage = CLUB_BASE_DAMAGE;
+                staminaCost = CLUB_STAMINA_COST;
                 damageType = DamageType.BLUNT;
             }
             case RAPIER -> {
-                baseDamage = 4;
-                staminaCost = 7;
+                baseDamage = RAPIER_BASE_DAMAGE;
+                staminaCost = RAPIER_STAMINA_COST;
                 damageType = DamageType.PIERCING;
             }
             case AXE -> {
-                baseDamage = 5;
-                staminaCost = 11;
+                baseDamage = AXE_BASE_DAMAGE;
+                staminaCost = AXE_STAMINA_COST;
                 damageType = DamageType.SLICING;
             }
             case SPEAR -> {
-                baseDamage = 4;
-                staminaCost = 8;
+                baseDamage = SPEAR_BASE_DAMAGE;
+                staminaCost = SPEAR_STAMINA_COST;
                 damageType = DamageType.PIERCING;
             }
             case WAND -> {
-                baseDamage = 3;
-                staminaCost = 1;
+                baseDamage = WAND_BASE_DAMAGE;
+                staminaCost = WAND_STAMINA_COST;
                 damageType = DamageType.MAGICAL;
             }
         }
