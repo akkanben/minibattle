@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+import static minibattle.creature.Creature.Stat.*;
 
 public class Battle {
 
+    private static final int WIDTH_PADDING = 2;
+
     private final Creature a;
     private final Creature b;
-    private final int width;
+    private final int leftWidth; // Char count for creature "a" -- left side creature
     private Creature winner = null;
 
     private final String os = System.getProperty("os.name");
@@ -33,7 +36,7 @@ public class Battle {
     public Battle(Creature a, Creature b) {
         this.a = a;
         this.b = b;
-        width = calculateWidth() + 1;
+        leftWidth = calculateWidth();
         validateStatBlockCharacters();
     }
 
@@ -49,27 +52,30 @@ public class Battle {
     public String printStatus() {
         cls();
         String aName = a.getName();
-        String aHP = STAT_BLOCK_FULL.repeat(a.getStat(Creature.Stat.HP).getCurrent());
-        String aHPEmpty = STAT_BLOCK_EMPTY.repeat(a.getStat(Creature.Stat.HP).getMax() - aHP.length());
+        String aHP = STAT_BLOCK_FULL.repeat(a.getStat(HP).getCurrent());
+        String aHPEmpty = STAT_BLOCK_EMPTY.repeat(a.getStat(HP).getMax() - aHP.length());
         String aSP = STAT_BLOCK_FULL.repeat(a.getStat(Creature.Stat.SP).getCurrent());
         String aSPEmpty = STAT_BLOCK_EMPTY.repeat(a.getStat(Creature.Stat.SP).getMax() - aSP.length());
-        String aStaticStats = "STR: " + a.getStat(Creature.Stat.STR).getCurrent()
-                + " DEX: " + a.getStat(Creature.Stat.DEX).getCurrent()
+        String aStaticStats = "STR: " + a.getStat(STR).getCurrent()
+                + " DEX: " + a.getStat(DEX).getCurrent()
                 + " MAG: " + a.getStat(Creature.Stat.MAG).getCurrent();
+        String aWeaponInfo = a.getWeapon() + ": " + a.getTotalAttack();
 
         String bName = b.getName();
-        String bHP = STAT_BLOCK_FULL.repeat(b.getStat(Creature.Stat.HP).getCurrent());
-        String bHPEmpty = STAT_BLOCK_EMPTY.repeat(b.getStat(Creature.Stat.HP).getMax() - bHP.length());
+        String bHP = STAT_BLOCK_FULL.repeat(b.getStat(HP).getCurrent());
+        String bHPEmpty = STAT_BLOCK_EMPTY.repeat(b.getStat(HP).getMax() - bHP.length());
         String bSP = STAT_BLOCK_FULL.repeat(b.getStat(Creature.Stat.SP).getCurrent());
         String bSPEmpty = STAT_BLOCK_EMPTY.repeat(b.getStat(Creature.Stat.SP).getMax() - bSP.length());
-        String bStaticStats = "STR: " + b.getStat(Creature.Stat.STR).getCurrent()
-                + " DEX: " + b.getStat(Creature.Stat.DEX).getCurrent()
+        String bStaticStats = "STR: " + b.getStat(STR).getCurrent()
+                + " DEX: " + b.getStat(DEX).getCurrent()
                 + " MAG: " + b.getStat(Creature.Stat.MAG).getCurrent();
+        String bWeaponInfo = b.getWeapon() + ": " + b.getTotalAttack();
 
-        int namePadding = width - aName.length() + "XX: ".length();
-        int hpPadding = width - (aHP.length() + aHPEmpty.length());
-        int spPadding = width - (aSP.length() + aSPEmpty.length());
-        int statsPadding = width - aStaticStats.length() + "XX: ".length();
+        int namePadding = leftWidth - aName.length();
+        int hpPadding = leftWidth - (aHP.length() + aHPEmpty.length() + "HP: ".length());
+        int spPadding = leftWidth - (aSP.length() + aSPEmpty.length() + "HP: ".length());
+        int statsPadding = leftWidth - aStaticStats.length();
+        int weaponPadding = leftWidth - aWeaponInfo.length();
 
         StringBuilder output = new StringBuilder();
         // Name line
@@ -81,6 +87,11 @@ public class Battle {
         output.append(CYAN).append(aStaticStats);
         output.append(" ".repeat(statsPadding));
         output.append(PURPLE).append(bStaticStats).append("\n");
+
+        // Weapon line
+        output.append(CYAN).append(aWeaponInfo);
+        output.append(" ".repeat(weaponPadding));
+        output.append(PURPLE).append(bWeaponInfo).append("\n");
 
         // HP gauge line
         output.append(CYAN).append("HP: ").append(aHP).append(aHPEmpty);
@@ -106,16 +117,16 @@ public class Battle {
         scanner.nextLine();
 
         while (winner == null) {
-            String msg = "";
+            String msg;
             if (random.nextBoolean()) {
                 msg = a.attack(b);
             } else {
                 msg = b.attack(a);
             }
-            if (a.getStat(Creature.Stat.HP).getCurrent() <= 0) {
+            if (a.getStat(HP).getCurrent() <= 0) {
                 winner = b;
             }
-            if (b.getStat(Creature.Stat.HP).getCurrent() <= 0) {
+            if (b.getStat(HP).getCurrent() <= 0) {
                 winner = a;
             }
             System.out.println(printStatus());
@@ -128,14 +139,22 @@ public class Battle {
         System.out.println(winner.getName() + " was victorious.");
     }
 
+    // This returns
     private int calculateWidth() {
+        // Stats and attack will be either a length of 1 digit or 2 digits
+        int strLength = a.getStat(STR).getMax() > 9 ? 2 : 1;
+        int dexLength = a.getStat(DEX).getMax() > 9 ? 2 : 1;
+        int magLength = a.getStat(MAG).getMax() > 9 ? 2 : 1;
+        int attackLength = a.getTotalAttack() > 9 ? 2 : 1;
+        // Return the largest line length (name|stats|weapon|hp|sp) plus WIDTH_PADDING
         return IntStream.of(
                         a.getName().length(),
-                        a.getStat(Creature.Stat.HP).getMax(),
-                        a.getStat(Creature.Stat.SP).getMax(),
-                        "STR: XX DEX: XX MAG: XX".length())
+                        "STR: ".length() + strLength + " DEX: ".length() + dexLength + " MAG: ".length() + magLength,
+                        a.getWeapon().toString().length() + " ATK: ".length() + attackLength,
+                        a.getStat(HP).getMax() + "XX: ".length(),
+                        a.getStat(SP).getMax() + "XX: ".length())
                 .max()
-                .getAsInt();
+                .getAsInt() + WIDTH_PADDING;
     }
 
     private void cls() {
