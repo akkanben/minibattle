@@ -18,3 +18,9 @@ Mini Battle simulator is a command line application that simulates battle betwee
     - An attack costs 10 stamina points and does a flat 5 damage to the opponents hit points.
     - If a creature can not attack because of too few stamina points then it rests and regains 10 points.
 
+- Version 0.2.0
+  - New creatures have a random weapon.
+    - Current weapon kinds:  dagger, sword, unarmed, club, rapier, axe, spear, wand, improvised.
+    - Weapon kinds have one of 4 assigned damage types: blunt, slicing, piercing, magical.
+  - Weapons have an affinity based off their damage type.
+    - An affinity multiplier increases the attack of the weapon based on the creature's matching stat. 
