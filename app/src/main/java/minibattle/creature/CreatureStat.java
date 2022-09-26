@@ -11,12 +11,18 @@ public class CreatureStat {
     }
 
     public void decrease(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException();
+        }
         current -= amount;
         if (current < 0)
             current = 0;
     }
 
     public void increase(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException();
+        }
         current += amount;
         if (current > max)
             current = max;
