@@ -1,12 +1,12 @@
 # Mini Battle (Simulator)
 
-Mini Battle simulator is a command line application that simulates battle between creatures. In the current version 0.1.0 a dual between an "Onion Knight" and a "Potato Knight" unfolds. The stats are randomly generated on each run.
+Mini Battle simulator is a command line application that simulates battle between creatures. In the current version 0.2.0 a dual between an "Onion Knight" and a "Potato Knight" unfolds. The stats and weapons are randomly generated on each run.
 
 
 
 ## Example
 
-![Example simulation](./images/example_02.gif)
+![Example simulation](./images/example_03.gif)
 
 
 ## Releases
