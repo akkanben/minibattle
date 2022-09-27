@@ -108,8 +108,8 @@ public class Battle {
         return output.toString();
     }
 
-    public void duel() {
-        Scanner scanner = new Scanner(System.in);
+    public Creature duel(Scanner scanner) {
+        //Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         String continueMessage = "\nPRESS ENTER TO CONTINUE";
         System.out.println(printStatus());
@@ -134,9 +134,9 @@ public class Battle {
             System.out.println(continueMessage);
             scanner.nextLine();
         }
-        scanner.close();
         System.out.println(printStatus());
         System.out.println(winner.getName() + " was victorious.");
+        return winner;
     }
 
     // This returns
