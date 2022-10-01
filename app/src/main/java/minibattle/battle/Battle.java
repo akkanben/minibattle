@@ -4,8 +4,9 @@ import minibattle.creature.Creature;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.stream.IntStream;
+
+import static minibattle.MiniBattle.inputScanner;
 import static minibattle.creature.Creature.Stat.*;
 
 public class Battle {
@@ -14,6 +15,7 @@ public class Battle {
 
     private final Creature a;
     private final Creature b;
+    private SelectionSide selectionSide;
     private final int leftWidth; // Char count for creature "a" -- left side creature
     private Creature winner = null;
 
@@ -32,10 +34,15 @@ public class Battle {
     public static String STAT_BLOCK_FULL = "\u25a0"; // ■
     public static String STAT_BLOCK_EMPTY = "\u25a1"; // □
 
+    public enum SelectionSide {
+        LEFT,
+        RIGHT
+    }
 
     public Battle(Creature a, Creature b) {
         this.a = a;
         this.b = b;
+        selectionSide = null;
         leftWidth = calculateWidth();
         validateStatBlockCharacters();
     }
@@ -47,6 +54,10 @@ public class Battle {
             STAT_BLOCK_EMPTY = "\u2591"; // ▓
             STAT_BLOCK_FULL = "\u2593"; // ░
         }
+    }
+
+    public void setSelectionSide(SelectionSide side) {
+        selectionSide = side;
     }
 
     public String printStatus() {
@@ -81,7 +92,16 @@ public class Battle {
         // Name line
         output.append(CYAN).append(aName);
         output.append(" ".repeat(namePadding));
-        output.append(PURPLE).append(bName).append("\n\n");
+        output.append(PURPLE).append(bName).append("\n");
+
+        // Creature Selector
+        if (selectionSide == SelectionSide.LEFT) {
+            output.append(CYAN).append("═".repeat(aName.length())).append("\n\n");
+        } else if (selectionSide == SelectionSide.RIGHT) {
+            output.append(PURPLE).append(" ".repeat(leftWidth)).append("═".repeat(bName.length())).append("\n\n");
+        } else {
+            output.append("\n\n");
+        }
 
         // Static stats line
         output.append(CYAN).append(aStaticStats);
@@ -108,13 +128,16 @@ public class Battle {
         return output.toString();
     }
 
-    public Creature duel(Scanner scanner) {
+    public Creature duel() {
         //Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         String continueMessage = "\nPRESS ENTER TO CONTINUE";
         System.out.println(printStatus());
+        System.out.println("┌─────────────────────┐");
+        System.out.println("│ Prepare For A Dual! │");
+        System.out.println("└─────────────────────┘");
         System.out.println(continueMessage);
-        scanner.nextLine();
+        inputScanner().nextLine();
 
         while (winner == null) {
             String msg;
@@ -132,11 +155,15 @@ public class Battle {
             System.out.println(printStatus());
             System.out.println(msg);
             System.out.println(continueMessage);
-            scanner.nextLine();
+            inputScanner().nextLine();
         }
         System.out.println(printStatus());
         System.out.println(winner.getName() + " was victorious.");
         return winner;
+    }
+
+    public SelectionSide getSelectionSide() {
+        return selectionSide;
     }
 
     // This returns
