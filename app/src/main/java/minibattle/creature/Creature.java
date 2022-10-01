@@ -1,13 +1,11 @@
 package minibattle.creature;
 
+import minibattle.MiniBattle;
 import minibattle.weapon.Weapon;
-import minibattle.weapon.WeaponKind;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class Creature {
 
@@ -16,11 +14,11 @@ public class Creature {
     private static final int DEFAULT_STAMINA_RECHARGE = 10;
 
     private final String name;
-    private Map<Stat, CreatureStat> stats;
     private final Weapon weapon;
-    private final int affinityBonus;
-    private final int weaponPenalty;
-    private final int totalAttack;
+    private Map<Stat, CreatureStat> stats;
+    private int affinityBonus;
+    private int weaponPenalty;
+    private int totalAttack;
 
     public enum Stat {
         HP,
@@ -30,30 +28,35 @@ public class Creature {
         MAG;
     }
 
+    public Creature() {
+        weapon = new Weapon();
+        name = MiniBattle.getCreatureName(weapon.getAffinity());
+        initializeCreatureStats();
+        setupAttackPower();
+    }
+
     public Creature(String name) {
         this.name = validateNameLength(name);
-        weapon = new Weapon(WeaponKind.UNARMED);
+        weapon = new Weapon();
         initializeCreatureStats();
-        affinityBonus = (int) (weapon.getAffinityMultiplier() * stats.get(weapon.getAffinity()).getMax());
-        weaponPenalty = stats.get(Stat.SP).getMax() >= weapon.getStaminaCost() ? 0 :
-                weapon.getStaminaCost() - stats.get(Stat.SP).getMax();
-        totalAttack = generateTotalAttack();
+        setupAttackPower();
     }
 
     public Creature(String name, @NotNull Weapon weapon) {
         this.name = validateNameLength(name);
         this.weapon = weapon;
         initializeCreatureStats();
-        affinityBonus = (int) (weapon.getAffinityMultiplier() * stats.get(weapon.getAffinity()).getMax());
-        weaponPenalty = stats.get(Stat.SP).getMax() >= weapon.getStaminaCost() ? 0 :
-                weapon.getStaminaCost() - stats.get(Stat.SP).getMax();
-        totalAttack = generateTotalAttack();
+        setupAttackPower();
     }
 
     public Creature(String name, @NotNull Weapon weapon, int str, int dex, int mag) {
         this.name = validateNameLength(name);
         this.weapon = weapon;
         initializeCreatureStats(str, dex, mag);
+        setupAttackPower();
+    }
+
+    private void setupAttackPower() {
         affinityBonus = (int) (weapon.getAffinityMultiplier() * stats.get(weapon.getAffinity()).getMax());
         weaponPenalty = stats.get(Stat.SP).getMax() >= weapon.getStaminaCost() ? 0 :
                 weapon.getStaminaCost() - stats.get(Stat.SP).getMax();
@@ -62,10 +65,9 @@ public class Creature {
 
     private void initializeCreatureStats() {
         stats = new HashMap<>();
-        Random random = new Random();
-        int str = random.nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
-        int dex = random.nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
-        int mag = random.nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
+        int str = MiniBattle.random().nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
+        int dex = MiniBattle.random().nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
+        int mag = MiniBattle.random().nextInt((STAT_MAX - STAT_MIN) + 1) + STAT_MIN;
         initializeCreatureStats(str, dex, mag);
     }
 

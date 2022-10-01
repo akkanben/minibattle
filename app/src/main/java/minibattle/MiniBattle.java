@@ -1,17 +1,32 @@
 package minibattle;
 
-import minibattle.battle.Battle;
 import minibattle.creature.Creature;
-import minibattle.weapon.Weapon;
+import minibattle.creature.name.NameGetter;
+import minibattle.game.SingleElimination;
+
+import java.util.Random;
+import java.util.Scanner;
 
 public class MiniBattle {
 
+    private static final Random random = new Random();
+    private static final NameGetter nameGetter = new NameGetter();
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Weapon weaponA = new Weapon(); // Random weapon
-        Weapon weaponB = new Weapon(); // Random weapon
-        Creature creatureA = new Creature("Potato Knight", weaponA);
-        Creature creatureB = new Creature("Onion Knight", weaponB);
-        Battle battle = new Battle(creatureA, creatureB);
-        battle.duel();
+        SingleElimination game = new SingleElimination(3);
+        game.start();
+    }
+
+    public static Random random() {
+        return random;
+    }
+
+    public static String getCreatureName(Creature.Stat affinity) {
+       return nameGetter.getName(affinity);
+    }
+
+    public static Scanner inputScanner() {
+        return scanner;
     }
 }

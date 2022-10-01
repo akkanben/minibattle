@@ -1,5 +1,7 @@
 package minibattle.weapon;
 
+import com.sun.tools.javac.Main;
+import minibattle.MiniBattle;
 import minibattle.creature.Creature;
 
 import java.awt.*;
@@ -42,7 +44,6 @@ public class Weapon {
     private static final int WAND_BASE_DAMAGE = 3;
     private static final int WAND_STAMINA_COST = 2;
 
-    private static final Random random = new Random();
     private static final List<WeaponKind> KINDS = List.of(WeaponKind.values());
     private final WeaponKind weaponKind;
     private int baseDamage;
@@ -64,7 +65,7 @@ public class Weapon {
     }
 
     private WeaponKind getRandomWeaponKind() {
-        return KINDS.get(random.nextInt(KINDS.size()));
+        return KINDS.get(MiniBattle.random().nextInt(KINDS.size()));
     }
 
     private void initWeaponAffinity() {
