@@ -1,0 +1,32 @@
+[
+  {
+    "affinity": "STR" ,
+    "list": [
+      "Strong Blob",
+      "Muscular Elk",
+      "Living Iron",
+      "Rock McStone",
+      "Tiny Giant"
+    ]
+  },
+  {
+    "affinity": "DEX" ,
+    "list": [
+      "Jerry Seinfeld",
+      "Jazzy Fox",
+      "Sneaky Thief",
+      "Hooded Rogue",
+      "Crestfallen Warrior"
+    ]
+  },
+  {
+    "affinity": "MAG" ,
+    "list": [
+      "Wizard Student",
+      "Wise Witch",
+      "Tiny Pixie",
+      "Goblin Mage",
+      "The All-Knowing"
+    ]
+  }
+]
