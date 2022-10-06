@@ -1,6 +1,6 @@
 # Mini Battle (Simulator)
 
-Mini Battle simulator is a command line application that simulates battle between creatures. In the current version 0.3.0 a series of duals between randomly generated creatures unfolds. The player selects one of the two creatures over a series of three rounds. If the selected creature wins the duel the player moves on to the next round. The stats and weapons are randomly generated each time a new creature is created.
+Mini Battle simulator is a command line application that simulates battle between creatures. In the current version 0.4.0 a series of duals between randomly generated creatures unfolds. The player selects one of the two creatures over a series of three rounds. If the selected creature wins the duel the player moves on to the next round. The stats and weapons are randomly generated each time a new creature is created.
 
 ## Example
 
