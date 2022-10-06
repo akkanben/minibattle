@@ -21,7 +21,7 @@ public class Battle {
 
     private final String os = System.getProperty("os.name");
 
-    private static final String RESET = "\u001B[0m";
+    public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\033[0;30m";
     public static final String RED = "\033[0;31m";
     public static final String GREEN = "\033[0;32m";
