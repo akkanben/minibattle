@@ -4,7 +4,7 @@ Mini Battle simulator is a command line application that simulates battle betwee
 
 ## Example
 
-![Example simulation](./images/example_04.gif)
+![Example simulation](./images/example_05.gif)
 
 ## Releases
 
@@ -28,3 +28,10 @@ Mini Battle simulator is a command line application that simulates battle betwee
     - The winning creature's status carries over to the next round.
   - Random name chosen for each creature from a pool of names.
     - Names match the weapon's affinity.
+
+- Version 0.4.0
+  - Adds outcome table to display a record of the rounds.
+    - Winning creature is highlighted in yellow.
+    - Outcome table is dynamically sized depending on the number of rounds completed.
+  - Adds ascii graphics for winning and losing.
+  - Updates moving on to the next round display.
