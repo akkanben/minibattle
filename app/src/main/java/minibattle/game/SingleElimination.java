@@ -11,9 +11,11 @@ public class SingleElimination {
     private Creature creatureA;
     private Creature creatureB;
     private Battle battle;
+    private final OutcomeTable outcomeTable;
 
     public SingleElimination(int rounds) {
         this.rounds = rounds;
+        outcomeTable = new OutcomeTable();
     }
 
     public void start() {
@@ -25,22 +27,22 @@ public class SingleElimination {
             Creature selectedCreature = getSelectedCreature();
             Creature result = battle.duel();
             if (result.equals(selectedCreature)) {
-                System.out.println("You selected the winner.");
-                System.out.println("Moving on to the next round");
-                // TODO add outcome to list
+                System.out.println(getMovingOnMessage());
+                outcomeTable.addRound(creatureA, creatureB, result);
                 createNewContender(selectedCreature);
             } else {
-                System.out.println("You failed to select the winner. Game Over.");
-                // TODO display outcome list for progress
-                // TODO display game over art
+                outcomeTable.addRound(creatureA, creatureB, result);
+                System.out.println(battle.printStatus());
+                System.out.println(getGameOverMessage());
+                System.out.println(outcomeTable.toString());
                 System.exit(0);
             }
             System.out.println("\nPress Enter to Continue");
             inputScanner().nextLine();
         }
-        System.out.println("\nCongratulations!!! You made it to the end.");
-        // TODO display outcome list
-        // TODO display congratulations art
+        System.out.println(battle.printStatus());
+        System.out.println(getCongratulationsMessage());
+        System.out.println(outcomeTable.toString());
         inputScanner().close();
     }
 
@@ -74,6 +76,47 @@ public class SingleElimination {
             }
         } while (!selection.equals("1") && !selection.equals("2"));
         return selectedCreature;
+    }
+
+    private String getMovingOnMessage() {
+        return """
+                ┌──────────────────────────────┐
+                │   You Selected The Winner!   │
+                │ Moving On To The Next Round! │
+                └──────────────────────────────┘
+                """;
+    }
+
+    private String getCongratulationsMessage() {
+        return """
+                         ,     \\    /      ,
+                        / \\    )\\__/(     / \\
+                       /   \\  (_\\  /_)   /   \\
+                ┌─────/─────\\──\\@  @/───/─────\\──────┐
+                │              |\\../|                │
+                │               \\VV/                 │
+                │                                    │
+                │          CONGRATULATIONS           │
+                │       You Made It To The End       │
+                └────────────────────────────────────┘
+                  |    /\\ /      \\\\       \\ /\\    |
+                  |  /   V        ))       V   \\  |
+                  |/     `       //        '     \\|
+                  `              V                '
+                """;
+    }
+
+    private String getGameOverMessage() {
+        return """
+                  _____          __  __ ______    ______      ________ _____
+                 / ____|   /\\   |  \\/  |  ____|  / __ \\ \\    / /  ____|  __ \\
+                | |  __   /  \\  | \\  / | |__    | |  | \\ \\  / /| |__  | |__) |
+                | | |_ | / /\\ \\ | |\\/| |  __|   | |  | |\\ \\/ / |  __| |  _  /
+                | |__| |/ ____ \\| |  | | |____  | |__| | \\  /  | |____| | \\ \\
+                 \\_____/_/    \\_\\_|  |_|______|  \\____/   \\/   |______|_|  \\_\\
+
+                              You Failed To Select The Winner
+                """;
     }
 
 }
